@@ -37,7 +37,7 @@ jar {
     attributes 'Built-By': 'wjw465150@gmail.com',
     'Build-Name': "${project.name}",
     'Build-Version': "${project.version}",
-    'Build-URL': 'https://github.com/wjw465150/scheduled-task'
+    'Build-URL': 'https://github.com/wjw465150/scheduled-task-spring-boot-starter'
   }
   excludes = ['**/test/**']
 }
@@ -73,7 +73,7 @@ publishing {
         // 构件描述
         description = '分布式定时任务，封装了elastic-job-lite&elastic-job-lite-console，支持手动触发任务,支持手动添加任务,支持一次性任务'
         // 构件主页
-        url = 'https://github.com/wjw465150/scheduled-task'
+        url = 'https://github.com/wjw465150/scheduled-task-spring-boot-starter'
         // 许可证名称和地址
         licenses {
           license {
@@ -92,9 +92,9 @@ publishing {
         }
         // 版本控制仓库地址
         scm {
-          url = "https://github.com/wjw465150/scheduled-task"
-          connection = "https://github.com/wjw465150/scheduled-task.git"
-          developerConnection = "https://github.com/wjw465150/scheduled-task.git"
+          url = "https://github.com/wjw465150/scheduled-task-spring-boot-starter"
+          connection = "https://github.com/wjw465150/scheduled-task-spring-boot-starter.git"
+          developerConnection = "https://github.com/wjw465150/scheduled-task-spring-boot-starter.git"
         }
       }
     }
