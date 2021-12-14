@@ -1,0 +1,173 @@
+//打包: gradlew -x test clean build 成功后发布:gradlew -x test publish
+//然后登录https://oss.sonatype.org/#stagingRepositories来查看,你的提交在未处理前，是`open`状态，然后点击`Close`按钮;然后等一会点击`Release`来发布
+
+plugins {
+  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'java'
+  id 'maven-publish'
+  id 'signing' //使用signing plugin做数字签名
+}
+
+apply from: rootDir.canonicalPath + '/.gradle/publish.gradle'
+
+// jar包的名字
+archivesBaseName = 'scheduled-task-spring-boot-starter'
+
+ext {
+  mysql = [version : '5.1.49']
+  elasticjob = [version : '2.1.5']
+  curator = [version : '2.10.0']
+  swagger = [version : '2.9.2']
+  commonscodec = [version : '1.12']
+}
+
+group = 'com.github.wjw465150'
+version = '2.1.5'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+[compileJava, compileTestJava]*.options*.compilerArgs << "-parameters" << "-Xlint:deprecation" //编译参数
+
+javadoc {
+  failOnError false
+}
+
+jar {
+  manifest {
+    attributes 'Built-By': 'wjw465150@gmail.com',
+    'Build-Name': "${project.name}",
+    'Build-Version': "${project.version}",
+    'Build-URL': 'https://github.com/wjw465150/scheduled-task'
+  }
+  excludes = ['**/test/**']
+}
+
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
+
+publishing {
+  // 定义发布什么
+  publications {
+    mavenJava(MavenPublication) {
+      // groupId,artifactId,version，如果不定义，则会按照默认值执行
+      groupId = project.group  //Sonatype上的Issue里填写的`Group Id`,可以跟package路径完全不一样
+      artifactId = project.name
+      version = project.version
+ 
+      from components.java
+      versionMapping {  //为了解决: Gradle, SpringBoot, MavenPublish - Publication only contains dependencies and/or constraints without a version
+        usage('java-api') {
+          fromResolutionOf('runtimeClasspath')
+        }
+        usage('java-runtime') {
+          fromResolutionResult()
+        }
+      }
+      
+      pom {
+        // 构件名称
+        // 区别于artifactId，可以理解为artifactName
+        name = project.name
+        // 构件描述
+        description = '分布式定时任务，封装了elastic-job-lite&elastic-job-lite-console，支持手动触发任务,支持手动添加任务,支持一次性任务'
+        // 构件主页
+        url = 'https://github.com/wjw465150/scheduled-task'
+        // 许可证名称和地址
+        licenses {
+          license {
+            name = 'The Apache License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution = '分布式定时任务，封装了elastic-job-lite&elastic-job-lite-console，支持手动触发任务,支持手动添加任务,支持一次性任务'
+          }
+        }
+        // 开发者信息
+        developers {
+          developer {
+            id = 'wjw465150'
+            name = 'wjw465150'
+            email = 'wjw465150@gmail.com'
+          }
+        }
+        // 版本控制仓库地址
+        scm {
+          url = "https://github.com/wjw465150/scheduled-task"
+          connection = "https://github.com/wjw465150/scheduled-task.git"
+          developerConnection = "https://github.com/wjw465150/scheduled-task.git"
+        }
+      }
+    }
+  }
+ 
+  // 定义发布到哪里
+  repositories {
+    maven {
+      url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+      credentials {
+        // 这里就是之前在issues.sonatype.org注册的账号,这些敏感信息为了防止泄露,我放到了`.gradle/publish.gradle`目录下
+        username sonatypeUsername
+        password sonatypePassword
+      }
+    }
+  }
+}
+ 
+//为所有的jar包做数字签名
+signing {
+  sign publishing.publications.mavenJava
+}
+
+repositories {
+  mavenLocal()
+  maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }  //优先使用阿里的镜像
+  mavenCentral()
+}
+
+
+//To get the basic Spring Boot features into our starter,
+//we need to declare a dependency to the basic Spring Boot starter in our build.gradle file.
+dependencyManagement {
+  imports {
+      mavenBom("org.springframework.boot:spring-boot-dependencies:2.4.12")
+  }
+}
+
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  //providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+  
+  //During the build, the metadata will be generated into the META-INF/spring-autoconfigure-metadata.properties file
+  annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
+  //This annotation processor will generate the file META-INF/spring-configuration-metadata.json
+  annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+  //启用AOP
+  implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+  //使用thymeleaf模板
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+  //集成:elasticjob-lite 2
+  implementation("com.dangdang:elastic-job-lite-core:${elasticjob.version}") {
+    exclude group: "org.apache.curator", module: "curator-client"
+    exclude group: "org.apache.curator", module: "curator-framework"
+    exclude group: "org.apache.curator", module: "curator-recipes"
+  }
+  implementation "org.apache.curator:curator-client:${curator.version}"
+  implementation "org.apache.curator:curator-framework:${curator.version}"
+  implementation "org.apache.curator:curator-recipes:${curator.version}"
+  implementation "com.dangdang:elastic-job-lite-spring:${elasticjob.version}"
+  implementation "log4j:log4j:1.2.17"  //这是因为 Log4J 1.2.16 的 pom 中存在一个Bug。1.2.16 已经在 2010 年停止更新了;可以通过声明对 log4j：log4j：1.2.17 的显式依赖
+  
+  //将作业运行的痕迹进行持久化到DB的时候elasticjob-lite需要
+  implementation "org.springframework.boot:spring-boot-starter-jdbc"
+  runtimeOnly "mysql:mysql-connector-java:${mysql.version}"
+
+  implementation "io.springfox:springfox-swagger2:${swagger.version}"
+  implementation "io.springfox:springfox-swagger-ui:${swagger.version}"
+  implementation "commons-codec:commons-codec:${commonscodec.version}"
+
+}
+
+compileJava.dependsOn(processResources)
