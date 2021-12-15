@@ -37,7 +37,6 @@
 
     <properties>
         <elastic-job.version>2.1.5</elastic-job.version>
-        <curator.version>2.10.0</curator.version>
         <swagger.version>2.9.2</swagger.version>
         <mysql.version>5.1.49</mysql.version>
         <commons-codec.version>1.12</commons-codec.version>
@@ -48,20 +47,6 @@
             <groupId>com.dangdang</groupId>
             <artifactId>elastic-job-lite-core</artifactId>
             <version>${elastic-job.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>curator-client</artifactId>
-                    <groupId>org.apache.curator</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>curator-framework</artifactId>
-                    <groupId>org.apache.curator</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>curator-recipes</artifactId>
-                    <groupId>org.apache.curator</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- 使用springframework自定义命名空间时引入 -->
@@ -69,21 +54,6 @@
             <groupId>com.dangdang</groupId>
             <artifactId>elastic-job-lite-spring</artifactId>
             <version>${elastic-job.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-framework</artifactId>
-            <version>${curator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-client</artifactId>
-            <version>${curator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-recipes</artifactId>
-            <version>${curator.version}</version>
         </dependency>
 
         <dependency>
@@ -180,7 +150,6 @@ archivesBaseName = 'scheduled-task-test'
 ext {
   mysql = [version : '5.1.49']
   elasticjob = [version : '2.1.5']
-  curator = [version : '2.10.0']
   swagger = [version : '2.9.2']
   commonscodec = [version : '1.12']
 }
@@ -208,14 +177,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
   //集成:elasticjob-lite 2
-  implementation("com.dangdang:elastic-job-lite-core:${elasticjob.version}") {
-    exclude group: "org.apache.curator", module: "curator-client"
-    exclude group: "org.apache.curator", module: "curator-framework"
-    exclude group: "org.apache.curator", module: "curator-recipes"
-  }
-  implementation "org.apache.curator:curator-client:${curator.version}"
-  implementation "org.apache.curator:curator-framework:${curator.version}"
-  implementation "org.apache.curator:curator-recipes:${curator.version}"
+  implementation "com.dangdang:elastic-job-lite-core:${elasticjob.version}"
   implementation "com.dangdang:elastic-job-lite-spring:${elasticjob.version}"
   implementation "log4j:log4j:1.2.17"  //这是因为 Log4J 1.2.16 的 pom 中存在一个Bug。1.2.16 已经在 2010 年停止更新了;可以通过声明对 log4j：log4j：1.2.17 的显式依赖
   

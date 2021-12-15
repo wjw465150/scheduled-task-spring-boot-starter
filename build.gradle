@@ -16,7 +16,6 @@ archivesBaseName = 'scheduled-task-spring-boot-starter'
 ext {
   mysql = [version : '5.1.49']
   elasticjob = [version : '2.1.5']
-  curator = [version : '2.10.0']
   swagger = [version : '2.9.2']
   commonscodec = [version : '1.12']
 }
@@ -149,14 +148,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
   //集成:elasticjob-lite 2
-  implementation("com.dangdang:elastic-job-lite-core:${elasticjob.version}") {
-    exclude group: "org.apache.curator", module: "curator-client"
-    exclude group: "org.apache.curator", module: "curator-framework"
-    exclude group: "org.apache.curator", module: "curator-recipes"
-  }
-  implementation "org.apache.curator:curator-client:${curator.version}"
-  implementation "org.apache.curator:curator-framework:${curator.version}"
-  implementation "org.apache.curator:curator-recipes:${curator.version}"
+  implementation "com.dangdang:elastic-job-lite-core:${elasticjob.version}"
   implementation "com.dangdang:elastic-job-lite-spring:${elasticjob.version}"
   implementation "log4j:log4j:1.2.17"  //这是因为 Log4J 1.2.16 的 pom 中存在一个Bug。1.2.16 已经在 2010 年停止更新了;可以通过声明对 log4j：log4j：1.2.17 的显式依赖
   

@@ -18,12 +18,12 @@ import org.springframework.stereotype.Component;
 public @interface ScheduledTask {
 
   /**
-   * 作业名称
+   * job名称
    */
   String name();
 
   /**
-   * 作业描述信息
+   * job描述信息
    */
   String description() default "";
 
@@ -33,7 +33,9 @@ public @interface ScheduledTask {
   String cron() default "";
 
   /**
-   * 作业分片总数
+   * job分片总数.
+   * 为1的时候,整个集群中只会有一个进程去执行该Job,在服务器数量没有波动的情况下,任务总会在固定某个进程上执行。
+   * 在作业执行前进程如果挂了,那作业会被分配到集群某一个存活的进程中.
    */
   int shardingTotalCount() default 1;
 
@@ -53,7 +55,7 @@ public @interface ScheduledTask {
 
   /**
    * 是否开启任务执行失效转移<br>
-   * 开启表示如果作业在一次任务执行中途宕机，允许将该次未完成的任务在另一作业节点上补偿执行
+   * 如果为true,当作业在执行过程中异常中断,作业会被分发到集群中存活的结点
    */
   boolean failover() default true;
 
@@ -114,14 +116,15 @@ public @interface ScheduledTask {
   String eventTraceRdbDataSource() default "";
 
   /**
+   * 作业是否禁止自动启动<br>
+   * 如果为true,在开始部署的时候作业不会自启动,即使到了触发时间,需要在控制台手动触发。
+   */
+  boolean disabled() default false;
+
+  /**
    * 前置后置任务监听实现类，需实现ElasticJobListener接口<br>
    */
   String listener() default "";
-
-  /**
-   * 作业是否禁止启动,可用于部署作业时，先禁止启动，部署结束后统一启动<br>
-   */
-  boolean disabled() default false;
 
   /**
    * 前置后置任务分布式监听实现类，需继承AbstractDistributeOnceElasticJobListener类<br>

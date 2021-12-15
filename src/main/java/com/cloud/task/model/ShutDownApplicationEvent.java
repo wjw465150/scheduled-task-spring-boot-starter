@@ -39,16 +39,6 @@ public class ShutDownApplicationEvent extends ApplicationEvent {
     this.exception = exception;
   }
 
-  public ShutDownApplicationEvent(Object source, Clock clock) {
-    super(source, clock);
-    // TODO Auto-generated constructor stub
-  }
-
-  public ShutDownApplicationEvent(Object source) {
-    super(source);
-    // TODO Auto-generated constructor stub
-  }
-
   @Override
   public String toString() {
     return "ShutDownApplicationEvent [context=" + context + ", exception=" + exception + "]";
