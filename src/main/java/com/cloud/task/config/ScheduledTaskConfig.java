@@ -13,7 +13,7 @@ import com.dangdang.ddframe.job.lite.api.listener.ElasticJobListener;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 
 /**
- *〈scheduled task config〉<br>
+ *创建出缺省的3个:defaultJobEventConfiguration,defaultElasticJobListener,distributedElasticJobListener<br>
  *
  * @author number68
  * @date 2019/4/24

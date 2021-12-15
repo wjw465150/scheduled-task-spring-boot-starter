@@ -44,7 +44,7 @@ public class DistributedTaskExecutionListener extends AbstractDistributeOnceElas
         log.info("All distributed job:{} shards have been finished successfully.", shardingContexts.getJobName());
 
         String jobParameter = shardingContexts.getJobParameter();
-        if (!StringUtils.isEmpty(jobParameter)
+        if (StringUtils.hasLength(jobParameter)
                 && jobParameter.contains(TaskConstants.JOB_PARAMETER_DELIMETER + TaskConstants.RUN_ONCE)) {
             // 将一次性作业删除
             String jobName = shardingContexts.getJobName();

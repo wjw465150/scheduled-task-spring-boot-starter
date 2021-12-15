@@ -56,6 +56,7 @@ public class ScheduledTaskBeanProcessor implements ApplicationListener<Applicati
     @Autowired
     private ManualScheduledTaskListener manualScheduledTaskListener;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
         ConfigurableApplicationContext ctx = event.getApplicationContext();
@@ -145,9 +146,12 @@ public class ScheduledTaskBeanProcessor implements ApplicationListener<Applicati
             .maxTimeDiffSeconds(maxTimeDiffSeconds).jobShardingStrategyClass(jobShardingStrategyClass)
             .reconcileIntervalMinutes(reconcileIntervalMinutes).build();
 
-        // 任务执行日志数据源，以名称获取
+        /**
+         * 任务执行日志数据源，以名称获取(注意不是DataSource而是{@link com.dangdang.ddframe.job.event.JobEventConfiguration})<br>
+         * 如果为空就使用系统缺省的:由`com.cloud.task.config.ScheduledTaskConfig`自动创建的`defaultJobEventConfiguration`Bean,参见{@link com.cloud.task.config.JobEventRdbConfiguration}
+         */
         JobEventConfiguration jobEventRdbConfiguration = null;
-        if (StringUtils.hasText(eventTraceRdbDataSource)) {
+        if (StringUtils.hasLength(eventTraceRdbDataSource)) {
             jobEventRdbConfiguration = SpringUtil.getBean(eventTraceRdbDataSource, JobEventConfiguration.class);
         }
 
@@ -160,7 +164,7 @@ public class ScheduledTaskBeanProcessor implements ApplicationListener<Applicati
     private List<ElasticJobListener> getTargetElasticJobListeners(ScheduledTask conf) {
         List<ElasticJobListener> result = new ArrayList<>();
         String listener = this.getEnvironmentStringValue(conf.name(), TaskConstants.LISTENER, conf.listener());
-        if (StringUtils.hasText(listener)) {
+        if (StringUtils.hasLength(listener)) {
             ElasticJobListener taskListener = SpringUtil.getBean(listener, ElasticJobListener.class);
             if (null != taskListener) {
                 result.add(taskListener);
@@ -169,7 +173,7 @@ public class ScheduledTaskBeanProcessor implements ApplicationListener<Applicati
 
         String distributedListener =
             this.getEnvironmentStringValue(conf.name(), TaskConstants.DISTRIBUTED_LISTENER, conf.distributedListener());
-        if (StringUtils.hasText(distributedListener)) {
+        if (StringUtils.hasLength(distributedListener)) {
             ElasticJobListener distributedTaskListener =
                 SpringUtil.getBean(distributedListener, ElasticJobListener.class);
             if (null != distributedTaskListener) {
@@ -190,7 +194,7 @@ public class ScheduledTaskBeanProcessor implements ApplicationListener<Applicati
     private String getEnvironmentStringValue(String jobName, String fieldName, String defaultValue) {
         String key = prefix + jobName + "." + fieldName;
         String value = environment.getProperty(key);
-        if (StringUtils.hasText(value)) {
+        if (StringUtils.hasLength(value)) {
             return value;
         }
         return defaultValue;
@@ -199,7 +203,7 @@ public class ScheduledTaskBeanProcessor implements ApplicationListener<Applicati
     private int getEnvironmentIntValue(String jobName, String fieldName, int defaultValue) {
         String key = prefix + jobName + "." + fieldName;
         String value = environment.getProperty(key);
-        if (StringUtils.hasText(value)) {
+        if (StringUtils.hasLength(value)) {
             return Integer.valueOf(value);
         }
         return defaultValue;
@@ -208,7 +212,7 @@ public class ScheduledTaskBeanProcessor implements ApplicationListener<Applicati
     private long getEnvironmentLongValue(String jobName, String fieldName, long defaultValue) {
         String key = prefix + jobName + "." + fieldName;
         String value = environment.getProperty(key);
-        if (StringUtils.hasText(value)) {
+        if (StringUtils.hasLength(value)) {
             return Long.valueOf(value);
         }
         return defaultValue;
@@ -217,7 +221,7 @@ public class ScheduledTaskBeanProcessor implements ApplicationListener<Applicati
     private boolean getEnvironmentBooleanValue(String jobName, String fieldName, boolean defaultValue) {
         String key = prefix + jobName + "." + fieldName;
         String value = environment.getProperty(key);
-        if (StringUtils.hasText(value)) {
+        if (StringUtils.hasLength(value)) {
             return Boolean.valueOf(value);
         }
         return defaultValue;

@@ -21,112 +21,88 @@
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.12</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>scheduled-task-test</artifactId>
-    <version>1.0.0</version>
-
-    <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.12</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>org.wjw.job</groupId>
+	<artifactId>testscheduledtask</artifactId>
+	<version>1.0.0</version>
+	
+	<name>TestScheduledTask</name>
+	<description>test scheduledtask</description>
+	
+	<properties>
+		<java.version>1.8</java.version>
         <elastic-job.version>2.1.5</elastic-job.version>
-        <swagger.version>2.9.2</swagger.version>
         <mysql.version>5.1.49</mysql.version>
-        <commons-codec.version>1.12</commons-codec.version>
-    </properties>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
-    <dependencies>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.dangdang</groupId>
             <artifactId>elastic-job-lite-core</artifactId>
             <version>${elastic-job.version}</version>
         </dependency>
-
-        <!-- 使用springframework自定义命名空间时引入 -->
         <dependency>
             <groupId>com.dangdang</groupId>
             <artifactId>elastic-job-lite-spring</artifactId>
             <version>${elastic-job.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.github.wjw465150</groupId>
+            <artifactId>scheduled-task-spring-boot-starter</artifactId>
+            <version>2.1.6</version>
         </dependency>
+		
+	</dependencies>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <dependency> <!-- 这是因为 Log4J 1.2.16 的 pom 中存在一个Bug。1.2.16 已经在 2010 年停止更新了;可以通过声明对 log4j：log4j：1.2.17 的显式依赖 -->
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <!-- spring end -->
-
-        <!-- swagger start -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-        <!-- swagger end -->
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>${commons-codec.version}</version>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <finalName>scheduled-task</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <fork>true</fork>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
 
@@ -150,8 +126,6 @@ archivesBaseName = 'scheduled-task-test'
 ext {
   mysql = [version : '5.1.49']
   elasticjob = [version : '2.1.5']
-  swagger = [version : '2.9.2']
-  commonscodec = [version : '1.12']
 }
 
 group = 'org.wjw.starter.test'
@@ -176,18 +150,13 @@ dependencies {
   //使用thymeleaf模板
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-  //集成:elasticjob-lite 2
-  implementation "com.dangdang:elastic-job-lite-core:${elasticjob.version}"
-  implementation "com.dangdang:elastic-job-lite-spring:${elasticjob.version}"
-  implementation "log4j:log4j:1.2.17"  //这是因为 Log4J 1.2.16 的 pom 中存在一个Bug。1.2.16 已经在 2010 年停止更新了;可以通过声明对 log4j：log4j：1.2.17 的显式依赖
-  
   implementation "org.springframework.boot:spring-boot-starter-jdbc"
   runtimeOnly "mysql:mysql-connector-java:${mysql.version}"
 
-  implementation "io.springfox:springfox-swagger2:${swagger.version}"
-  implementation "io.springfox:springfox-swagger-ui:${swagger.version}"
-  implementation "commons-codec:commons-codec:${commonscodec.version}"
-
+  //集成:elasticjob-lite 2
+  implementation "com.dangdang:elastic-job-lite-core:${elasticjob.version}"
+  implementation "com.dangdang:elastic-job-lite-spring:${elasticjob.version}"
+  
   implementation group: 'com.github.wjw465150', name: 'scheduled-task-spring-boot-starter', version: '2.1.5'
 }
 

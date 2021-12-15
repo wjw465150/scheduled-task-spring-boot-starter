@@ -1,6 +1,7 @@
 package com.cloud.task.filter;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -12,7 +13,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class TaskAuthFilter implements Filter {
 
         authorization = authorization.substring(AUTH_PREFIX.length());
         if (!(authProperties.getUsername() + ":" + authProperties.getPassword())
-            .equals(new String(Base64.decodeBase64(authorization)))) {
+            .equals(new String(Base64.getDecoder().decode(authorization)))) {
             needAuthenticate(httpResponse);
             return;
         }

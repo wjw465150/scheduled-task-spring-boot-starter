@@ -1,7 +1,5 @@
 package com.cloud.task.model;
 
-import java.time.Clock;
-
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -12,6 +10,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @date 2019/4/25
  * @since 0.1
  */
+@SuppressWarnings("serial")
 public class ShutDownApplicationEvent extends ApplicationEvent {
   private ConfigurableApplicationContext context;
   private Throwable                      exception;

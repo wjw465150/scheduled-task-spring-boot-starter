@@ -83,10 +83,10 @@ public class EventTraceHistoryController {
         throws ParseException {
         int perPage = 10;
         int page = 1;
-        if (!StringUtils.isEmpty(info.getPerPage())) {
+        if (StringUtils.hasLength(info.getPerPage())) {
             perPage = Integer.parseInt(info.getPerPage());
         }
-        if (!StringUtils.isEmpty(info.getPage())) {
+        if (StringUtils.hasLength(info.getPage())) {
             page = Integer.parseInt(info.getPage());
         }
 
@@ -96,10 +96,10 @@ public class EventTraceHistoryController {
         Date endTime = null;
         Map<String, Object> fields = getQueryParameters(info, params);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        if (!StringUtils.isEmpty(info.getStartTime())) {
+        if (StringUtils.hasLength(info.getStartTime())) {
             startTime = simpleDateFormat.parse(info.getStartTime());
         }
-        if (!StringUtils.isEmpty(info.getEndTime())) {
+        if (StringUtils.hasLength(info.getEndTime())) {
             endTime = simpleDateFormat.parse(info.getEndTime());
         }
         return new JobEventRdbSearch.Condition(perPage, page, sort, order, startTime, endTime, fields);
@@ -112,7 +112,7 @@ public class EventTraceHistoryController {
                 Field field = JobExecutionQueryInfo.class.getDeclaredField(each);
                 field.setAccessible(true);
                 String value = (String)field.get(info);
-                if (!StringUtils.isEmpty(value)) {
+                if (StringUtils.hasLength(value)) {
                     result.put(each, value);
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {

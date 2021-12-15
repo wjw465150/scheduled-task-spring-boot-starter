@@ -17,11 +17,10 @@ ext {
   mysql = [version : '5.1.49']
   elasticjob = [version : '2.1.5']
   swagger = [version : '2.9.2']
-  commonscodec = [version : '1.12']
 }
 
 group = 'com.github.wjw465150'
-version = '2.1.5'
+version = '2.1.6'
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
@@ -158,8 +157,6 @@ dependencies {
 
   implementation "io.springfox:springfox-swagger2:${swagger.version}"
   implementation "io.springfox:springfox-swagger-ui:${swagger.version}"
-  implementation "commons-codec:commons-codec:${commonscodec.version}"
-
 }
 
 compileJava.dependsOn(processResources)

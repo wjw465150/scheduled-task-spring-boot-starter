@@ -43,7 +43,7 @@ public class ManuallyAddJobController {
     public Object addJob(@RequestBody Job job) {
         JSONResult result = JSONResult.getSuccessResult();
         String errorMsg = checkJob(job);
-        if (!StringUtils.isEmpty(errorMsg)) {
+        if (StringUtils.hasLength(errorMsg)) {
             result.setStatus("failure");
             result.setMsg(errorMsg);
             return result;
@@ -59,24 +59,24 @@ public class ManuallyAddJobController {
     }
 
     private String checkJob(Job job) {
-        if (!StringUtils.hasText(job.getJobName())) {
+        if (!StringUtils.hasLength(job.getJobName())) {
             return "name must not be null";
         }
 
-        if (!StringUtils.hasText(job.getCron())) {
+        if (!StringUtils.hasLength(job.getCron())) {
             return "cron must not be null";
         }
 
-        if (!StringUtils.hasText(job.getJobType())) {
+        if (!StringUtils.hasLength(job.getJobType())) {
             return "JobType must not be null";
         }
 
         if (TaskConstants.SCRIPT_JOB_TYPE.equals(job.getJobType())) {
-            if (!StringUtils.hasText(job.getScriptCommandLine())) {
+            if (!StringUtils.hasLength(job.getScriptCommandLine())) {
                 return "ScriptCommandLine must not be null";
             }
         } else {
-            if (!StringUtils.hasText(job.getJobClass())) {
+            if (!StringUtils.hasLength(job.getJobClass())) {
                 return "JobClass must not be null";
             }
         }

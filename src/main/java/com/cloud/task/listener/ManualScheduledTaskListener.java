@@ -45,6 +45,7 @@ public class ManualScheduledTaskListener {
      */
     public void monitorJob() {
         CuratorFramework client = registryCenter.getClient();
+        @SuppressWarnings("resource")
         PathChildrenCache childrenCache = new PathChildrenCache(client, "/", true);
         PathChildrenCacheListener childrenCacheListener =
             (CuratorFramework curatorFramework, PathChildrenCacheEvent event) -> {
@@ -70,7 +71,7 @@ public class ManualScheduledTaskListener {
                             Job newJob = JSONUtil.parseObject(config, Job.class);
                             boolean runOnce = false;
                             String newJobParameter = newJob.getJobParameter();
-                            if (!StringUtils.isEmpty(newJobParameter) && newJobParameter
+                            if (StringUtils.hasLength(newJobParameter) && newJobParameter
                                 .contains(TaskConstants.JOB_PARAMETER_DELIMETER + TaskConstants.RUN_ONCE)) {
                                 runOnce = true;
                             }

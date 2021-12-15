@@ -121,8 +121,8 @@ public class Job implements Serializable {
   private int reconcileIntervalMinutes = 10;
 
   /**
-   * 作业事件追踪的datasource数据源Bean引用<br>
-   * 如果没有指定就使用SB缺省的datasource
+   * 任务执行日志数据源，以名称获取(注意不是DataSource而是{@link com.dangdang.ddframe.job.event.JobEventConfiguration})<br>
+   * 如果为空就使用系统缺省的:由`com.cloud.task.config.ScheduledTaskConfig`自动创建的`defaultJobEventConfiguration`Bean,参见{@link com.cloud.task.config.JobEventRdbConfiguration}
    */
   private String eventTraceRdbDataSource = "";
 

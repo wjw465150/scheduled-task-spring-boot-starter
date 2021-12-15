@@ -111,7 +111,7 @@ public class ScheduledTaskBuilder {
     public void buildManualScheduledTaskAndInit(Job job, boolean runOnce) throws Exception {
         if (runOnce) {
             String jobParameter = job.getJobParameter();
-            if (StringUtils.isEmpty(jobParameter)
+            if (!StringUtils.hasLength(jobParameter)
                 || !jobParameter.contains(TaskConstants.JOB_PARAMETER_DELIMETER + TaskConstants.RUN_ONCE)) {
                 jobParameter = jobParameter + TaskConstants.JOB_PARAMETER_DELIMETER + TaskConstants.RUN_ONCE;
                 job.setJobParameter(jobParameter);
@@ -150,9 +150,12 @@ public class ScheduledTaskBuilder {
             .maxTimeDiffSeconds(job.getMaxTimeDiffSeconds()).jobShardingStrategyClass(job.getJobShardingStrategyClass())
             .reconcileIntervalMinutes(job.getReconcileIntervalMinutes()).build();
 
-        // 任务执行日志数据源，以名称获取
+        /**
+         * 任务执行日志数据源，以名称获取(注意不是DataSource而是{@link com.dangdang.ddframe.job.event.JobEventConfiguration})<br>
+         * 如果为空就使用系统缺省的:由`com.cloud.task.config.ScheduledTaskConfig`自动创建的`defaultJobEventConfiguration`Bean,参见{@link com.cloud.task.config.JobEventRdbConfiguration}
+         */
         JobEventConfiguration jobEventRdbConfiguration = null;
-        if (StringUtils.hasText(job.getEventTraceRdbDataSource())) {
+        if (StringUtils.hasLength(job.getEventTraceRdbDataSource())) {
             jobEventRdbConfiguration =
                 SpringUtil.getBean(job.getEventTraceRdbDataSource(), JobEventConfiguration.class);
         }
@@ -173,7 +176,7 @@ public class ScheduledTaskBuilder {
     private List<ElasticJobListener> getTargetElasticJobListeners(Job job) {
         List<ElasticJobListener> result = new ArrayList<>();
         String listener = job.getListener();
-        if (StringUtils.hasText(listener)) {
+        if (StringUtils.hasLength(listener)) {
             ElasticJobListener taskListener = SpringUtil.getBean(listener, ElasticJobListener.class);
             if (null != taskListener) {
                 result.add(taskListener);
@@ -181,7 +184,7 @@ public class ScheduledTaskBuilder {
         }
 
         String distributedListener = job.getDistributedListener();
-        if (StringUtils.hasText(distributedListener)) {
+        if (StringUtils.hasLength(distributedListener)) {
             ElasticJobListener distributedTaskListener =
                 SpringUtil.getBean(distributedListener, ElasticJobListener.class);
             if (null != distributedTaskListener) {
