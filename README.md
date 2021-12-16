@@ -1,17 +1,13 @@
 # scheduled-task-spring-boot-starter
-分布式定时任务，封装了**elastic-job-lite** & **elastic-job-lite-console**，支持手动触发任务,支持手动添加任务,支持一次性任务.
-
-1. 查看作业以及服务器状态
-
-2. 快捷的修改以及删除作业设置
-
-3. 启用和禁用作业
-
-4. 跨注册中心查看作业
-
-5. 查看作业运行轨迹和运行状态
-
-6. 添加作业，作业不能与自动启动的作业冲突
+基于Zookeeper的最最轻量级的分布式定时任务,一个Start就搞定!!! 封装的**elastic-job-lite** & **elastic-job-lite-console**.
+   + 支持手动触发Job
+   + 支持手动添加Job
+   + 支持一次性Job
+   + 查看Job以及服务器状态
+   + 快捷的修改以及删除Job设置
+   + 启用和禁用Job
+   + 跨注册中心查看Job
+   + 查看Job运行轨迹和运行状态
 
 > **💡提示:** 初始代码Copy自:`https://github.com/number68/scheduled-task`   
 
@@ -46,11 +42,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -58,41 +55,12 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dangdang</groupId>
-            <artifactId>elastic-job-lite-core</artifactId>
-            <version>${elastic-job.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.dangdang</groupId>
-            <artifactId>elastic-job-lite-spring</artifactId>
-            <version>${elastic-job.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.wjw465150</groupId>
-            <artifactId>scheduled-task-spring-boot-starter</artifactId>
-            <version>2.1.6</version>
-        </dependency>
-		
+
+    <dependency>
+        <groupId>com.github.wjw465150</groupId>
+        <artifactId>scheduled-task-spring-boot-starter</artifactId>
+        <version>2.1.7</version>
+    </dependency>
 	</dependencies>
 
 	<build>
@@ -117,7 +85,6 @@ plugins {
   id 'org.springframework.boot' version '2.4.12'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'java'
-  id 'war'
 }
 
 // jar包的名字
@@ -144,20 +111,9 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
-  //启用AOP
-  implementation 'org.springframework.boot:spring-boot-starter-aop'
-
-  //使用thymeleaf模板
-  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
-  implementation "org.springframework.boot:spring-boot-starter-jdbc"
   runtimeOnly "mysql:mysql-connector-java:${mysql.version}"
 
-  //集成:elasticjob-lite 2
-  implementation "com.dangdang:elastic-job-lite-core:${elasticjob.version}"
-  implementation "com.dangdang:elastic-job-lite-spring:${elasticjob.version}"
-  
-  implementation group: 'com.github.wjw465150', name: 'scheduled-task-spring-boot-starter', version: '2.1.5'
+  implementation group: 'com.github.wjw465150', name: 'scheduled-task-spring-boot-starter', version: '2.1.7'
 }
 
 ```

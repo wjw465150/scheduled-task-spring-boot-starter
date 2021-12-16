@@ -1,4 +1,4 @@
-//打包: gradlew -x test clean build 成功后发布:gradlew -x test publish
+//打包: gradlew -x test clean build 成功后发布:gradlew -x test publish -Dorg.gradle.internal.http.socketTimeout=200000 -Dorg.gradle.internal.http.connectionTimeout=200000
 //然后登录https://oss.sonatype.org/#stagingRepositories来查看,你的提交在未处理前，是`open`状态，然后点击`Close`按钮;然后等一会点击`Release`来发布
 
 plugins {
@@ -131,27 +131,26 @@ dependencyManagement {
 }
 
 dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-web'
-  //providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-  
   //During the build, the metadata will be generated into the META-INF/spring-autoconfigure-metadata.properties file
   annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
   //This annotation processor will generate the file META-INF/spring-configuration-metadata.json
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  
   //启用AOP
-  implementation 'org.springframework.boot:spring-boot-starter-aop'
+  compile 'org.springframework.boot:spring-boot-starter-aop'
 
   //使用thymeleaf模板
-  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
   //集成:elasticjob-lite 2
-  implementation "com.dangdang:elastic-job-lite-core:${elasticjob.version}"
-  implementation "com.dangdang:elastic-job-lite-spring:${elasticjob.version}"
+  compile  "com.dangdang:elastic-job-lite-core:${elasticjob.version}"
+  compile  "com.dangdang:elastic-job-lite-spring:${elasticjob.version}"
   implementation "log4j:log4j:1.2.17"  //这是因为 Log4J 1.2.16 的 pom 中存在一个Bug。1.2.16 已经在 2010 年停止更新了;可以通过声明对 log4j：log4j：1.2.17 的显式依赖
   
   //将作业运行的痕迹进行持久化到DB的时候elasticjob-lite需要
-  implementation "org.springframework.boot:spring-boot-starter-jdbc"
+  compile  "org.springframework.boot:spring-boot-starter-jdbc"
   runtimeOnly "mysql:mysql-connector-java:${mysql.version}"
 }
 
