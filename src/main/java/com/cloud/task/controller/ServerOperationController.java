@@ -16,15 +16,12 @@ import com.cloud.task.model.JobBriefInfo;
 import com.cloud.task.model.ServerBriefInfo;
 import com.google.common.base.Optional;
 
-import io.swagger.annotations.Api;
-
 /**
  * 服务器维度操作的RESTful API.
  *
  */
 @RestController
 @RequestMapping("/api/servers")
-@Api(description = "服务器接口")
 public class ServerOperationController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 

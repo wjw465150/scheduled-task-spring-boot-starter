@@ -14,15 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cloud.task.api.IJobAPIService;
 import com.cloud.task.model.Job;
 
-import io.swagger.annotations.Api;
-
 /**
  * 作业配置的RESTful API.
  *
  */
 @RestController
 @RequestMapping("/api/jobs/config")
-@Api(description = "任务配置接口")
 public class LiteJobConfigController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
   

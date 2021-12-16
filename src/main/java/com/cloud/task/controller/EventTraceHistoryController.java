@@ -23,8 +23,6 @@ import com.dangdang.ddframe.job.event.rdb.JobEventRdbSearch;
 import com.dangdang.ddframe.job.event.type.JobExecutionEvent;
 import com.dangdang.ddframe.job.event.type.JobStatusTraceEvent;
 
-import io.swagger.annotations.Api;
-
 /**
  *〈EventTraceHistoryController〉<br>
  *
@@ -34,7 +32,6 @@ import io.swagger.annotations.Api;
  */
 @RestController
 @RequestMapping("/api/event-trace")
-@Api(description = "任务执行事件历史接口")
 public class EventTraceHistoryController {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 

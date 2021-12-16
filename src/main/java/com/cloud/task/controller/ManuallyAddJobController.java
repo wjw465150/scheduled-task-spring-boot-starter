@@ -23,11 +23,8 @@ import com.cloud.task.handler.ScheduledTaskBuilder;
 import com.cloud.task.model.JSONResult;
 import com.cloud.task.model.Job;
 
-import io.swagger.annotations.Api;
-
 @RestController
 @RequestMapping("/api/manuallyJob")
-@Api(description = "手动执行任务接口")
 public class ManuallyAddJobController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     

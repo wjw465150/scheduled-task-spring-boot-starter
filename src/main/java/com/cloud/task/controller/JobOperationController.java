@@ -16,15 +16,12 @@ import com.cloud.task.model.JobBriefInfo;
 import com.cloud.task.model.ShardingInfo;
 import com.google.common.base.Optional;
 
-import io.swagger.annotations.Api;
-
 /**
  * 作业维度操作的RESTful API.
  *
  */
 @RestController
 @RequestMapping("/api/jobs")
-@Api(description = "作业接口")
 public class JobOperationController {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 

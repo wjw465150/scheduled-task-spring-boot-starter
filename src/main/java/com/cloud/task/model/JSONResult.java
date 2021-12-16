@@ -2,9 +2,6 @@ package com.cloud.task.model;
 
 import java.io.Serializable;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 /**
  * <功能描述><br/>
  *
@@ -12,7 +9,6 @@ import io.swagger.annotations.ApiModelProperty;
  * @create 2019/04/09 10:30:27
  * @since 0.1
  */
-@ApiModel
 public class JSONResult<T> implements Serializable {
 
   private static final long serialVersionUID = -5708920009608618218L;
@@ -20,20 +16,17 @@ public class JSONResult<T> implements Serializable {
   /**
    * 成功标志
    */
-  @ApiModelProperty(value = "调用成功标志")
   private String status;
 
   /**
    * 消息
    */
-  @ApiModelProperty(value = "调用返回消息")
   private String msg;
 
   /**
    * 数据<br/>
    * 1、列表数据（含分页信息） 2、单行数据 3、自定义数据
    */
-  @ApiModelProperty(value = "业务数据")
   private T data;
 
   /**
