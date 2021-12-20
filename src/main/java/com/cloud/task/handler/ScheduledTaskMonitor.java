@@ -43,9 +43,6 @@ public class ScheduledTaskMonitor implements ApplicationListener<ApplicationStar
     @Autowired
     private ScheduledTaskBuilder scheduledTaskBuilder;
 
-    @Autowired
-    private DataSource dataSource;
-
     @Value("${scheduledTask.monitor.enable:false}")
     private Boolean scheduledTaskMonitorEnabled;
 
@@ -68,6 +65,11 @@ public class ScheduledTaskMonitor implements ApplicationListener<ApplicationStar
             return;
         }
 
+        DataSource dataSource = null;
+        if( scheduledTaskBuilder.getJobEventConfiguration() instanceof com.cloud.task.config.JobEventRdbConfiguration) {
+          dataSource = ((com.cloud.task.config.JobEventRdbConfiguration) scheduledTaskBuilder.getJobEventConfiguration()).getDataSource();
+        }
+        
         lastMonitorTime = new AtomicLong(System.currentTimeMillis());
         executorService = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory("ScheduledTaskMonitor"));
         jdbcTemplate = new JdbcTemplate(dataSource);

@@ -23,6 +23,9 @@ public final class JobEventRdbConfiguration extends JobEventRdbIdentity implemen
     private static final long serialVersionUID = 3344410699286435226L;
 
     private final transient DataSource dataSource;
+    public DataSource getDataSource() {
+      return dataSource;
+    }
 
     @Override
     public JobEventListener createJobEventListener() throws JobEventListenerConfigurationException {

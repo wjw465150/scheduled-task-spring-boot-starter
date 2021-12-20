@@ -19,7 +19,7 @@ ext {
 }
 
 group = 'com.github.wjw465150'
-version = '2.1.7'
+version = '2.1.8'
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'

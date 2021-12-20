@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cloud.task.model.JobExecutionQueryInfo;
+import com.dangdang.ddframe.job.event.JobEventConfiguration;
 import com.dangdang.ddframe.job.event.rdb.JobEventRdbSearch;
 import com.dangdang.ddframe.job.event.type.JobExecutionEvent;
 import com.dangdang.ddframe.job.event.type.JobStatusTraceEvent;
@@ -36,7 +38,8 @@ public class EventTraceHistoryController {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private DataSource dataSource;
+    @Qualifier("defaultJobEventConfiguration")
+    private JobEventConfiguration jobEventConfiguration;
 
     /**
      * 查询作业执行事件.
@@ -52,6 +55,11 @@ public class EventTraceHistoryController {
             return null;
         }
 
+        DataSource dataSource = null;
+        if( jobEventConfiguration instanceof com.cloud.task.config.JobEventRdbConfiguration) {
+          dataSource = ((com.cloud.task.config.JobEventRdbConfiguration) jobEventConfiguration).getDataSource();
+        }
+        
         JobEventRdbSearch jobEventRdbSearch = new JobEventRdbSearch(dataSource);
         return jobEventRdbSearch
             .findJobExecutionEvents(buildCondition(queryParams, new String[] {"jobName", "ip", "isSuccess"}));
@@ -71,6 +79,11 @@ public class EventTraceHistoryController {
             return null;
         }
 
+        DataSource dataSource = null;
+        if( jobEventConfiguration instanceof com.cloud.task.config.JobEventRdbConfiguration) {
+          dataSource = ((com.cloud.task.config.JobEventRdbConfiguration) jobEventConfiguration).getDataSource();
+        }
+        
         JobEventRdbSearch jobEventRdbSearch = new JobEventRdbSearch(dataSource);
         return jobEventRdbSearch.findJobStatusTraceEvents(
             buildCondition(queryParams, new String[] {"jobName", "source", "executionType", "state"}));

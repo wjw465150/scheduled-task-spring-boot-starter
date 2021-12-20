@@ -49,6 +49,9 @@ public class ScheduledTaskBuilder {
     @Autowired
     @Qualifier("defaultJobEventConfiguration")
     private JobEventConfiguration jobEventConfiguration;
+    public JobEventConfiguration getJobEventConfiguration() {
+      return jobEventConfiguration;
+    }
 
     @Autowired
     @Qualifier("defaultElasticJobListener")
