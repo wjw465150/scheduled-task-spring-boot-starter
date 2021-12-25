@@ -59,7 +59,7 @@
     <dependency>
         <groupId>com.github.wjw465150</groupId>
         <artifactId>scheduled-task-spring-boot-starter</artifactId>
-        <version>2.1.7</version>
+        <version>2.1.8</version>
     </dependency>
 	</dependencies>
 
@@ -113,7 +113,7 @@ dependencies {
 
   runtimeOnly "mysql:mysql-connector-java:${mysql.version}"
 
-  implementation group: 'com.github.wjw465150', name: 'scheduled-task-spring-boot-starter', version: '2.1.7'
+  implementation group: 'com.github.wjw465150', name: 'scheduled-task-spring-boot-starter', version: '2.1.8'
 }
 
 ```

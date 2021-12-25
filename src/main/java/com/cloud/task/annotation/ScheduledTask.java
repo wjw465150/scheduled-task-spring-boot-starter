@@ -60,9 +60,19 @@ public @interface ScheduledTask {
   boolean failover() default true;
 
   /**
-   * 是否开启错过任务重新执行
+   * 是否开启错过任务重新执行<br>
+   * 注意: 只有`monitorExecution`为`true`的情况下,`misfire`才有意义
    */
   boolean misfire() default false;
+
+  /**
+   * 监控作业运行时状态,幂等机制(monitorExecution,即不会在多个Job服务器运行同一个分片)，
+   * 来确保同一条数据不会被多个Job同时处理，避免同一条数据被同一个Job实例的多个线程处理。<br>
+   * 每次作业执行时间和间隔时间均非常短的情况，建议不监控作业运行时状态以提升效率。<br>
+   * 因为是瞬时状态，所以无必要监控。请用户自行增加数据堆积监控。并且不能保证数据重复选取，应在作业中实现幂等性。<br>
+   * 每次作业执行时间和间隔时间均较长的情况，建议监控作业运行时状态，可保证数据不会重复选取。<br>
+   */
+  boolean monitorExecution() default true;
 
   /**
    * 是否用SpringBoot里的覆盖Zookeeper里的Job配置 
@@ -75,14 +85,6 @@ public @interface ScheduledTask {
    * 如果非流式处理数据, 则处理数据完成后作业结束<br>
    */
   boolean streamingProcess() default false;
-
-  /**
-   * 监控作业运行时状态,幂等机制(monitorExecution)，来确保同一条数据不会被多个Job同时处理，避免同一条数据被同一个Job实例的多个线程处理。<br>
-   * 每次作业执行时间和间隔时间均非常短的情况，建议不监控作业运行时状态以提升效率。<br>
-   * 因为是瞬时状态，所以无必要监控。请用户自行增加数据堆积监控。并且不能保证数据重复选取，应在作业中实现幂等性。<br>
-   * 每次作业执行时间和间隔时间均较长的情况，建议监控作业运行时状态，可保证数据不会重复选取。<br>
-   */
-  boolean monitorExecution() default true;
 
   /**
    * 作业监控端口<br>

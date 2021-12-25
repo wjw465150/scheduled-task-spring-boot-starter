@@ -67,8 +67,18 @@ public class Job implements Serializable {
 
   /**
    * 是否开启错过任务重新执行<br>
+   * 注意: 只有`monitorExecution`为`true`的情况下,`misfire`才有意义
    */
   private boolean misfire = false;
+
+  /**
+   * 监控作业运行时状态,幂等机制(monitorExecution,即不会在多个Job服务器运行同一个分片)，
+   * 来确保同一条数据不会被多个Job同时处理，避免同一条数据被同一个Job实例的多个线程处理。<br>
+   * 每次作业执行时间和间隔时间均非常短的情况，建议不监控作业运行时状态以提升效率。<br>
+   * 因为是瞬时状态，所以无必要监控。请用户自行增加数据堆积监控。并且不能保证数据重复选取，应在作业中实现幂等性。<br>
+   * 每次作业执行时间和间隔时间均较长的情况，建议监控作业运行时状态，可保证数据不会重复选取。<br>
+   */
+  private boolean monitorExecution = true;
 
   /**
    * 是否用SpringBoot里的覆盖Zookeeper里的Job配置
@@ -86,14 +96,6 @@ public class Job implements Serializable {
    * 脚本型作业执行命令行<br>
    */
   private String scriptCommandLine = "";
-
-  /**
-   * 监控作业运行时状态,幂等机制(monitorExecution)，来确保同一条数据不会被多个Job同时处理，避免同一条数据被同一个Job实例的多个线程处理。<br>
-   * 每次作业执行时间和间隔时间均非常短的情况，建议不监控作业运行时状态以提升效率。<br>
-   * 因为是瞬时状态，所以无必要监控。请用户自行增加数据堆积监控。并且不能保证数据重复选取，应在作业中实现幂等性。<br>
-   * 每次作业执行时间和间隔时间均较长的情况，建议监控作业运行时状态，可保证数据不会重复选取。<br>
-   */
-  private boolean monitorExecution = true;
 
   /**
    * 作业监控端口<br>
